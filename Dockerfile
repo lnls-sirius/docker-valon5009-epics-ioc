@@ -2,7 +2,7 @@ FROM lnls/epics-dist:base-3.15-synapps-lnls-R1-0-0-debian-9.5
 
 ENV IOC_REPO valon5009-epics-ioc
 ENV BOOT_DIR iocValon5009
-ENV COMMIT v0.4.0
+ENV COMMIT v0.4.1
 
 RUN git clone https://github.com/lnls-dig/${IOC_REPO}.git /opt/epics/${IOC_REPO} && \
     cd /opt/epics/${IOC_REPO} && \
