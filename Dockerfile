@@ -1,18 +1,20 @@
+ARG BASE_VERSION
 ARG DEBIAN_VERSION
 ARG SYNAPPS_VERSION
-ARG BASE_VERSION
 FROM lnls/epics-synapps:${BASE_VERSION}-${SYNAPPS_VERSION}-${DEBIAN_VERSION}
 
+ARG BASE_VERSION
 ARG COMMIT
 ARG DEBIAN_VERSION
 ARG IOC_GROUP
 ARG IOC_REPO
+ARG SYNAPPS_VERSION
 
 ENV BOOT_DIR iocValon5009
 
 RUN git clone https://github.com/${IOC_GROUP}/${IOC_REPO}.git /opt/epics/${IOC_REPO} && \
+    ln --verbose --symbolic $(ls --directory /opt/epics/synApps*) /opt/epics/synApps &&\
     cd /opt/epics/${IOC_REPO} && \
-    ln --verbose --symbolic $(ls -d /opt/epics/synApps*) /opt/epics/synApps &&\
     git checkout ${COMMIT} && \
     echo 'EPICS_BASE=/opt/epics/base' > configure/RELEASE.local && \
     echo 'SUPPORT=/opt/epics/synApps/support' >> configure/RELEASE.local && \
