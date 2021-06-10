@@ -1,7 +1,7 @@
 ARG DEBIAN_VERSION
 ARG SYNAPPS_VERSION
 ARG BASE_VERSION
-FROM lnls/epics-synapps:base-3.15-synapps-lnls-R1-0-0-${DEBIAN_VERSION}
+FROM lnls/epics-synapps:${BASE_VERSION}-${SYNAPPS_VERSION}-${DEBIAN_VERSION}
 
 ARG COMMIT
 ARG DEBIAN_VERSION
@@ -10,11 +10,12 @@ ARG IOC_REPO
 
 ENV BOOT_DIR iocValon5009
 
-RUN git clone https://github.com/lnls-dig/${IOC_REPO}.git /opt/epics/${IOC_REPO} && \
+RUN git clone https://github.com/${IOC_GROUP}/${IOC_REPO}.git /opt/epics/${IOC_REPO} && \
     cd /opt/epics/${IOC_REPO} && \
+    ln --verbose --symbolic $(ls -d /opt/epics/synApps*) /opt/epics/synApps &&\
     git checkout ${COMMIT} && \
     echo 'EPICS_BASE=/opt/epics/base' > configure/RELEASE.local && \
-    echo 'SUPPORT=/opt/epics/synApps-lnls-R1-0-0/support' >> configure/RELEASE.local && \
+    echo 'SUPPORT=/opt/epics/synApps/support' >> configure/RELEASE.local && \
     echo 'AUTOSAVE=$(SUPPORT)/autosave-R5-9' >> configure/RELEASE.local && \
     echo 'CALC=$(SUPPORT)/calc-R3-7' >> configure/RELEASE.local && \
     echo 'STREAM=$(SUPPORT)/stream-R2-7-7' >> configure/RELEASE.local && \
